@@ -1,20 +1,25 @@
-# 🏥 Hackios - Autonomous Medical Appeal Agent
+<div align="center">
+  <img src="frontend/src/assets/logo.png" alt="DenialShield Logo" width="140" style="border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+  <h1>DenialShield</h1>
+  <p><strong>Autonomous Medical Appeal Agent</strong></p>
+  <p><i>"Healthcare is a right, not a privilege. Let AI fight the bureaucracy."</i></p>
 
-> **An intelligent multi-agent system that fights insurance denials for you.**
-
-![Tech Stack](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![LangGraph](https://img.shields.io/badge/LangGraph-FF4B4B?style=for-the-badge&logo=langchain&logoColor=white)
-![PaddleOCR](https://img.shields.io/badge/PaddleOCR-007AFF?style=for-the-badge)
-![Groq](https://img.shields.io/badge/Groq-F55036?style=for-the-badge)
+  <p>
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/LangGraph-FF4B4B?style=for-the-badge&logo=langchain&logoColor=white" alt="LangGraph" />
+    <img src="https://img.shields.io/badge/PaddleOCR-007AFF?style=for-the-badge" alt="PaddleOCR" />
+    <img src="https://img.shields.io/badge/Groq-F55036?style=for-the-badge" alt="Groq" />
+  </p>
+</div>
 
 ---
 
 ## 🌟 Overview
 
-**Hackios** is a cutting-edge Health Insurance Appeal Assistant powered by **Agentic AI**. It doesn't just generate text; it orchestrates a team of specialized AI agents to analyze, strategize, and fight incorrect claim denials.
+**DenialShield** is a cutting-edge Health Insurance Appeal Assistant powered by **Agentic AI**. It doesn't just generate text; it orchestrates a team of specialized AI agents to analyze, strategize, and fight incorrect claim denials.
 
-By combining **PaddleOCR** for document understanding and **LangGraph** for multi-agent collaboration, Hackios turns a complex, stressful process into a single click.
+By combining **PaddleOCR** for document understanding and **LangGraph** for multi-agent collaboration, DenialShield turns a complex, stressful process into a single click.
 
 ---
 
@@ -46,7 +51,7 @@ A team of 5 specialized agents works on every appeal:
 
 ## 🏗️ System Architecture
 
-Hackios uses a state-of-the-art **Cyclic Graph Architecture** powered by LangGraph.
+DenialShield uses a state-of-the-art **Cyclic Graph Architecture** powered by LangGraph.
 
 ```mermaid
 graph TD
@@ -76,7 +81,7 @@ graph TD
 
 ---
 
-## �️ Technology Stack
+## 🛠️ Technology Stack
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
@@ -126,8 +131,6 @@ This is a hackathon project built with speed and innovation in mind.
 
 ---
 
-## � License
+## 📄 License
 
 MIT License. Built for **Hackios 2026**.
-
-> *"Healthcare is a right, not a privilege. Let AI fight the bureaucracy."*
