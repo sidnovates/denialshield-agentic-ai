@@ -1,0 +1,78 @@
+{
+    "insurance": "UnitedHealthcare",
+    "plan_type": "Managed Care",
+    "procedure_rules": {
+        "72148": {
+            "procedure": "Lumbar MRI",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "6+ weeks documented conservative treatment",
+                "Physical therapy records",
+                "Chiropractor or PT evaluation",
+                "Pain management attempts documented",
+                "Radicular symptoms documented"
+            ],
+            "prior_authorization_required": true
+        },
+        "76856": {
+            "procedure": "Pelvic Ultrasound",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "Clinical symptoms documented",
+                "Physical exam findings",
+                "Medical necessity for imaging"
+            ],
+            "prior_authorization_required": false
+        },
+        "99214": {
+            "procedure": "Office Visit - Established Patient, Moderate Complexity",
+            "category": "Office Visits",
+            "requirements": [
+                "Detailed history and exam documented",
+                "Medical decision making documented"
+            ],
+            "prior_authorization_required": false
+        },
+        "27130": {
+            "procedure": "Total Hip Replacement",
+            "category": "Surgery",
+            "requirements": [
+                "X-ray showing severe arthritis",
+                "Failed conservative treatment 6+ months",
+                "NSAIDs and/or injections tried",
+                "Physical therapy documented",
+                "Functional limitations documented",
+                "Orthopedic surgeon evaluation"
+            ],
+            "prior_authorization_required": true
+        },
+        "93000": {
+            "procedure": "Electrocardiogram (EKG)",
+            "category": "Diagnostic Test",
+            "requirements": [
+                "Cardiac symptoms documented",
+                "Clinical indication for testing"
+            ],
+            "prior_authorization_required": false
+        },
+        "63030": {
+            "procedure": "Lumbar Laminectomy",
+            "category": "Surgery",
+            "requirements": [
+                "MRI showing spinal stenosis",
+                "Neurological deficits documented",
+                "Failed conservative treatment 3+ months",
+                "Physical therapy compliance",
+                "Neurosurgeon or orthopedic surgeon evaluation"
+            ],
+            "prior_authorization_required": true
+        }
+    },
+    "denial_codes": {
+        "CO-50": "Not medically necessary",
+        "CO-197": "Authorization/precertification missing",
+        "CO-16": "Incomplete claim information",
+        "CO-18": "Duplicate claim",
+        "CO-45": "Charge exceeds fee schedule"
+    }
+}

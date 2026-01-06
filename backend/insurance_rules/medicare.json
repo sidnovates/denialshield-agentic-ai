@@ -1,0 +1,78 @@
+{
+    "insurance": "Medicare",
+    "plan_type": "Federal Health Insurance",
+    "procedure_rules": {
+        "72148": {
+            "procedure": "Lumbar MRI",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "Clinical indication documented",
+                "Conservative treatment attempted",
+                "Medical necessity per LCD guidelines",
+                "Physician order and documentation"
+            ],
+            "prior_authorization_required": false,
+            "notes": "Must meet LCD (Local Coverage Determination) criteria"
+        },
+        "93000": {
+            "procedure": "Electrocardiogram",
+            "category": "Diagnostic Test",
+            "requirements": [
+                "Cardiac symptoms or risk factors",
+                "Medical necessity documented"
+            ],
+            "prior_authorization_required": false
+        },
+        "99213": {
+            "procedure": "Office Visit - Established Patient",
+            "category": "Office Visits",
+            "requirements": [
+                "Medically necessary visit",
+                "Documentation supports level of service"
+            ],
+            "prior_authorization_required": false
+        },
+        "G0438": {
+            "procedure": "Annual Wellness Visit - Initial",
+            "category": "Preventive Care",
+            "requirements": [
+                "Patient eligible for Medicare 12+ months",
+                "Not within 12 months of Welcome to Medicare visit"
+            ],
+            "prior_authorization_required": false
+        },
+        "27447": {
+            "procedure": "Total Knee Replacement",
+            "category": "Surgery",
+            "requirements": [
+                "Medical necessity documented",
+                "Conservative treatment failed",
+                "Functional impairment documented",
+                "X-ray showing severe arthritis",
+                "Must meet NCD (National Coverage Determination)"
+            ],
+            "prior_authorization_required": false,
+            "notes": "Must be performed in approved facility"
+        },
+        "97110": {
+            "procedure": "Physical Therapy - Therapeutic Exercise",
+            "category": "Physical Therapy",
+            "requirements": [
+                "Physician certification",
+                "Treatment plan documented",
+                "Medical necessity",
+                "Cap threshold monitoring"
+            ],
+            "prior_authorization_required": false,
+            "notes": "Subject to therapy cap or exceptions"
+        }
+    },
+    "denial_codes": {
+        "CO-50": "Non-covered service per LCD/NCD",
+        "CO-16": "Missing/incomplete documentation",
+        "CO-96": "Non-covered charge",
+        "CO-B7": "Benefit maximum reached",
+        "CO-151": "Payment adjusted - custodial care"
+    },
+    "notes": "Medicare coverage is determined by LCD (Local Coverage Determinations) and NCD (National Coverage Determinations). Always verify current guidelines."
+}

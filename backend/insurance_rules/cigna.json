@@ -1,0 +1,74 @@
+{
+    "insurance": "Cigna",
+    "plan_type": "Health Maintenance Organization",
+    "procedure_rules": {
+        "72148": {
+            "procedure": "Lumbar MRI",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "Conservative treatment 6+ weeks",
+                "Physical therapy documented",
+                "Medication management documented",
+                "Red flag symptoms ruled out or documented",
+                "Physician referral required"
+            ],
+            "prior_authorization_required": true
+        },
+        "71250": {
+            "procedure": "CT Chest without contrast",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "Clinical indication (lung nodule, infection, etc.)",
+                "Chest X-ray reviewed first (if applicable)",
+                "Medical necessity documented"
+            ],
+            "prior_authorization_required": true
+        },
+        "95913": {
+            "procedure": "Nerve Conduction Studies",
+            "category": "Diagnostic Test",
+            "requirements": [
+                "Clinical symptoms of neuropathy",
+                "Physical exam findings",
+                "Medical necessity documented"
+            ],
+            "prior_authorization_required": false
+        },
+        "47562": {
+            "procedure": "Laparoscopic Cholecystectomy",
+            "category": "Surgery",
+            "requirements": [
+                "Imaging confirming gallstones",
+                "Symptomatic gallbladder disease",
+                "Surgical evaluation documented"
+            ],
+            "prior_authorization_required": true
+        },
+        "92004": {
+            "procedure": "Comprehensive Eye Exam",
+            "category": "Vision",
+            "requirements": [
+                "Medical necessity (diabetes, vision changes, etc.)",
+                "Annual limit applies for routine exams"
+            ],
+            "prior_authorization_required": false
+        },
+        "20610": {
+            "procedure": "Joint Injection - Major Joint",
+            "category": "Pain Management",
+            "requirements": [
+                "Clinical exam findings",
+                "Conservative treatment attempted",
+                "Limited to 3 injections per joint per year"
+            ],
+            "prior_authorization_required": false
+        }
+    },
+    "denial_codes": {
+        "CO-50": "Non-covered service - not medically necessary",
+        "CO-197": "Missing precertification",
+        "CO-16": "Claim missing information",
+        "CO-96": "Non-covered charge",
+        "CO-109": "Not covered unless emergency"
+    }
+}

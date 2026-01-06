@@ -1,0 +1,78 @@
+{
+    "insurance": "BlueCross BlueShield PPO",
+    "plan_type": "Preferred Provider Organization",
+    "procedure_rules": {
+        "72148": {
+            "procedure": "Lumbar MRI",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "8 weeks of conservative care documented",
+                "Physical therapy attendance records",
+                "Medication trial documented",
+                "Clinical findings supporting need",
+                "Physician notes with treatment history"
+            ],
+            "prior_authorization_required": true
+        },
+        "70553": {
+            "procedure": "Brain MRI with contrast",
+            "category": "Diagnostic Imaging",
+            "requirements": [
+                "Specific clinical indication (tumor, MS, etc.)",
+                "Previous imaging reviewed",
+                "Contrast agent medical necessity documented"
+            ],
+            "prior_authorization_required": true
+        },
+        "64483": {
+            "procedure": "Epidural Steroid Injection - Lumbar",
+            "category": "Pain Management",
+            "requirements": [
+                "MRI or CT confirming diagnosis",
+                "6 weeks conservative treatment documented",
+                "Physical exam findings",
+                "Limited to 3 injections per year"
+            ],
+            "prior_authorization_required": true
+        },
+        "23472": {
+            "procedure": "Shoulder Rotator Cuff Repair",
+            "category": "Surgery",
+            "requirements": [
+                "MRI showing full-thickness tear",
+                "3+ months conservative treatment",
+                "Physical therapy compliance",
+                "Functional impairment documented",
+                "Surgeon pre-operative evaluation"
+            ],
+            "prior_authorization_required": true
+        },
+        "43235": {
+            "procedure": "Upper Endoscopy",
+            "category": "Diagnostic Procedure",
+            "requirements": [
+                "Documented symptoms (reflux, bleeding, etc.)",
+                "Trial of medication documented",
+                "Clinical indication for procedure"
+            ],
+            "prior_authorization_required": false
+        },
+        "90834": {
+            "procedure": "Psychotherapy - 45 minutes",
+            "category": "Mental Health",
+            "requirements": [
+                "Mental health diagnosis documented",
+                "Treatment plan established",
+                "Limited to 20 sessions per year without review"
+            ],
+            "prior_authorization_required": false
+        }
+    },
+    "denial_codes": {
+        "CO-50": "Services not medically necessary",
+        "CO-197": "Precertification absent",
+        "CO-16": "Missing documentation",
+        "CO-96": "Non-covered service",
+        "CO-B4": "Late filing penalty"
+    }
+}
