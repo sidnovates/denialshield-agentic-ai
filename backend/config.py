@@ -16,7 +16,10 @@ class Settings:
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
     
     # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./backend/data/app.db")
+    # Use absolute path to ensure consistency regardless of CWD
+    BASE_DIR = Path(__file__).resolve().parent
+    DATABASE_PATH = BASE_DIR / "data" / "app.db"
+    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{DATABASE_PATH}")
     
     # Uploads
     # Uploads - RESOLVED ABSOLUTE PATH

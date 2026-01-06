@@ -51,10 +51,14 @@ def run_medical_agent(state: ClaimState) -> dict:
     DENIAL REASON (if known):
     {denial_reason}
     
+    HISTORICAL SUCCESS PATTERNS (HINT):
+    {historical_context}
+    
     Task:
     1. Identify the patient's condition and symptoms (Subjective/Objective).
     2. Explain why the procedure was standard of care and necessary.
     3. specificlly address why conservative treatment failed or wasn't appropriate if related to the denial.
+    4. If historical patterns suggest a specific documents/arguments, incorporate them.
     
     Return the analysis in valid JSON format matching this schema:
     {format_instructions}
@@ -62,7 +66,7 @@ def run_medical_agent(state: ClaimState) -> dict:
     
     prompt = PromptTemplate(
         template=template,
-        input_variables=["documentation", "denial_reason"],
+        input_variables=["documentation", "denial_reason", "historical_context"],
         partial_variables={"format_instructions": parser.get_format_instructions()}
     )
     
@@ -73,9 +77,21 @@ def run_medical_agent(state: ClaimState) -> dict:
         docs = ocr_data.get("doctor", {}).get("structured", {})
         denial = ocr_data.get("denial", {}).get("structured", {})
         
+        # Prepare historical context string
+        past_pattern = state.get("past_pattern_context")
+        hist_context_str = "None available."
+        if past_pattern:
+            hist_context_str = f"""
+            Similar denials have been resolved successfully!
+            Occurrence Count: {past_pattern.get('occurrence_count')}
+            Suggested Resolution: {past_pattern.get('suggested_solution')}
+            Commonly Missing Docs: {past_pattern.get('common_missing_docs')}
+            """
+        
         result = chain.invoke({
             "documentation": str(docs),
-            "denial_reason": denial.get("denial_reason", "Not specified")
+            "denial_reason": denial.get("denial_reason", "Not specified"),
+            "historical_context": hist_context_str
         })
         
         logger.info(f"Medical Agent Justification: {result.medical_necessity_found}")

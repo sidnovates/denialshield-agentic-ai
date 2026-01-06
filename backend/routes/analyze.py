@@ -12,6 +12,7 @@ import logging
 from database import get_db, UploadedDocument, AnalysisSession, ExtractedData, ReasoningResult
 from llm.extract_llm8b import extractor_llm
 from llm.reasoning_llm70b import reasoning_llm
+from utils.memory_graph import get_pattern_suggestions
 from config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -146,9 +147,28 @@ async def analyze_documents(
             print(f"DEBUG: Found Denial Letter. Extracted Fields: {json.dumps(denial_doc['fields'], indent=2)}")
             print(f"DEBUG: Sending to Reasoning Model with {len(supporting_docs)} supporting docs.")
             
+            # Memory Lookup (Added for Denial Pattern Memory)
+            historical_context = None
+            try:
+                denial_info = denial_doc["fields"]
+                ins = denial_info.get("insurer")
+                code = denial_info.get("denial_code")
+                proc = denial_info.get("procedure")
+                
+                if ins and code:
+                    suggestion = get_pattern_suggestions(db, ins, code, proc)
+                    if suggestion.get("found"):
+                        print(f"🧠 MEMORY: Found past pattern in Analysis! Count: {suggestion.get('occurrence_count')}")
+                        historical_context = suggestion
+                    else:
+                        print(f"🧠 MEMORY: Checked for {ins}/{code}, but no pattern found (or below threshold).")
+            except Exception as e:
+                print(f"⚠️ Memory Check Error: {e}")
+
             reasoning_result = reasoning_llm.explain_denial(
                 denial_doc["fields"],
-                supporting_docs
+                supporting_docs,
+                historical_context
             )
         
         # Store reasoning result

@@ -83,6 +83,21 @@ class ReasoningResult(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class DenialPattern(Base):
+    """Model for storing learning denial patterns without training."""
+    __tablename__ = "denial_patterns"
+
+    id = Column(Integer, primary_key=True, index=True)
+    insurance = Column(String, index=True)
+    procedure = Column(String)
+    cpt_code = Column(String)
+    denial_code = Column(String, index=True)
+    missing_docs = Column(JSON)
+    resolved_by = Column(JSON)
+    occurrence_count = Column(Integer, default=1)
+    last_seen = Column(DateTime, default=datetime.utcnow)
+
+
 def init_db():
     """Initialize database tables."""
     Base.metadata.create_all(bind=engine)

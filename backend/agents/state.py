@@ -27,3 +27,6 @@ class ClaimState(TypedDict):
     # System Metadata
     iteration_count: int
     session_id: str
+    
+    # Learning / Pattern Memory
+    past_pattern_context: Optional[Dict[str, Any]]
