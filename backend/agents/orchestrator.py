@@ -11,6 +11,7 @@ from agents.medical_agent import run_medical_agent
 from agents.legal_agent import run_legal_agent
 from agents.negotiator_agent import run_negotiator_agent
 from agents.auditor_agent import run_auditor_agent
+from agents.simulator_agent import run_simulator_agent
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,7 @@ def create_appeal_graph():
     workflow.add_node("policy_agent", run_policy_agent)
     workflow.add_node("medical_agent", run_medical_agent)
     workflow.add_node("legal_agent", run_legal_agent)
+    workflow.add_node("simulator_agent", run_simulator_agent)
     workflow.add_node("negotiator_agent", run_negotiator_agent)
     workflow.add_node("auditor_agent", run_auditor_agent)
     
@@ -51,7 +53,9 @@ def create_appeal_graph():
     
     workflow.add_edge("policy_agent", "medical_agent")
     workflow.add_edge("medical_agent", "legal_agent")
+    workflow.add_edge("medical_agent", "simulator_agent") # Run Simulator after Medical data is available
     workflow.add_edge("legal_agent", "negotiator_agent")
+    workflow.add_edge("simulator_agent", "negotiator_agent") # Simulator feeds into Negotiator
     workflow.add_edge("negotiator_agent", "auditor_agent")
     
     # Conditional Edge from Auditor
@@ -66,9 +70,10 @@ def create_appeal_graph():
     
     return workflow.compile()
 
-def run_appeal_workflow(ocr_data: dict, insurance_rules: dict) -> str:
+def run_appeal_workflow(ocr_data: dict, insurance_rules: dict) -> dict:
     """
     Entry point to run the entire graph.
+    Returns the full final state.
     """
     print("\n🔗 STARTING MULTI-AGENT APPEAL WORKFLOW 🔗")
     print("---------------------------------------------")
@@ -96,10 +101,6 @@ def run_appeal_workflow(ocr_data: dict, insurance_rules: dict) -> str:
     print("---------------------------------------------")
     print("🏁 WORKFLOW COMPLETE 🏁\n")
     
-    # The final output is just the delta of the last node (Auditor). 
-    # But LangGraph state accumulates. We need the 'appeal_draft' from the final state.
-    # Since 'stream' gives deltas, we need to capture the state properly.
     # Re-running with invoke ensures we get the final full state.
-    
     final_state = app.invoke(initial_state)
-    return final_state.get("appeal_draft", "Error: No draft generated.")
+    return final_state

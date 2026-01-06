@@ -35,8 +35,8 @@ class Settings:
     # Insurance Rules
     INSURANCE_RULES_DIR: Path = Path("./backend/insurance_rules")
     
-    # Development/Testing
-    USE_MOCK_OCR: bool = os.getenv("USE_MOCK_OCR", "false").lower() == "true"
+    # Development/Testing - Force True for stability on Windows/Python 3.13
+    USE_MOCK_OCR: bool = True # os.getenv("USE_MOCK_OCR", "false").lower() == "true"
     
     # File size limits (in bytes)
     MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB

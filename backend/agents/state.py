@@ -16,6 +16,7 @@ class ClaimState(TypedDict):
     policy_analysis: Optional[Dict[str, Any]]
     medical_analysis: Optional[Dict[str, Any]]
     legal_analysis: Optional[Dict[str, Any]]
+    simulation_result: Optional[Dict[str, Any]]
     
     # Negotiation
     appeal_draft: str

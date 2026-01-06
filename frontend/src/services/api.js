@@ -100,6 +100,18 @@ export const analyzeDocuments = async (documentIds, insurancePlan, analysisType)
 };
 
 /**
+ * Run Claim Outcome Simulation
+ */
+export const runSimulation = async (documentIds, insurancePlan) => {
+    const response = await api.post('/simulation/run', {
+        document_ids: documentIds,
+        insurance_plan: insurancePlan,
+    });
+
+    return response.data;
+};
+
+/**
  * Generate appeal letter
  */
 export const generateAppealLetter = async (documentIds, insurancePlan, userDetails) => {
