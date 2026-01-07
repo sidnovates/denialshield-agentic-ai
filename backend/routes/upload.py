@@ -62,10 +62,14 @@ async def upload_files(
             logger.info(f"File saved: {file_path}")
             
             print(f"Start processing file: {file.filename}...")
-            # Perform OCR
-            ocr_text = ocr_processor.process_document(str(file_path))
-            print(f"Finished processing file: {file.filename}")
-            print(f"--- OCR Extracted Text ({file.filename}) ---\n{ocr_text}\n---------------------------------------------")
+            # Perform OCR with error handling
+            try:
+                ocr_text = ocr_processor.process_document(str(file_path))
+                print(f"Finished processing file: {file.filename}")
+                print(f"--- OCR Extracted Text ({file.filename}) ---\n{ocr_text}\n---------------------------------------------")
+            except Exception as ocr_error:
+                logger.error(f"OCR Failed for {file.filename}: {ocr_error}")
+                ocr_text = "" # Fallback to empty text so basic upload succeeds
             
             # Store in database
             db_document = UploadedDocument(

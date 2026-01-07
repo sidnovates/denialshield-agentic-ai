@@ -75,11 +75,13 @@ async def generate_appeal_letter(
         
         logger.info(f"Starting Multi-Agent Appeal for Session {session_id}")
         
-        appeal_text = await asyncio.to_thread(
+        final_state = await asyncio.to_thread(
             run_appeal_workflow, 
             combined_ocr_data, 
             insurance_rules
         )
+        
+        appeal_text = final_state.get("appeal_draft", "Error: No draft generated.")
         
         # 4. Generate PDF (Formal Formatting)
         pdf_filename = f"appeal_letter_{session_id}.pdf"

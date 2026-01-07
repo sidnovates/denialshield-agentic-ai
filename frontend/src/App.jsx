@@ -3,8 +3,9 @@ import ChatInterface from './components/ChatInterface';
 import FileUpload from './components/FileUpload';
 import ActionOptions from './components/ActionOptions';
 import AnalysisResult from './components/AnalysisResult';
+import SimulationResult from './components/SimulationResult';
 import AppealDetailsForm from './components/AppealDetailsForm';
-import { uploadFiles, analyzeDocuments, generateAppealLetter, getInsurancePlans, clearUploads, getDocuments, savePolicy, getPolicy } from './services/api';
+import { uploadFiles, analyzeDocuments, generateAppealLetter, getInsurancePlans, clearUploads, getDocuments, savePolicy, getPolicy, runSimulation } from './services/api';
 import logo from './assets/logo.png';
 import './App.css';
 
@@ -44,6 +45,7 @@ function App() {
             <ActionOptions
                 options={[
                     { label: '🔍 Pre-Claim Analysis', value: 'pre_claim' },
+                    { label: '🔮 Claim Simulator', value: 'simulator' },
                     { label: '📋 Denial Explanation', value: 'denial_explanation' },
                     { label: '✍️ Appeal Letter', value: 'appeal' }
                 ]}
@@ -94,6 +96,26 @@ function App() {
             await typeMessage(null, false, (
                 <FileUpload
                     placeholder="Upload PDF or Images"
+                    onFilesSelected={handleDocUpload}
+                />
+            ));
+        }
+
+        // CASE 2: Simulator -> FRESH START (like pre_claim)
+        else if (option.value === 'simulator') {
+            await clearUploads('PreClaim');
+            currentCategoryRef.current = 'PreClaim';
+            setUploadedDocs([]);
+            uploadedDocsRef.current = [];
+            setSelectedPolicy(null);
+            selectedPolicyRef.current = null;
+
+            await typeMessage('🔮 Let\'s simulate your claim outcome. I can tell you your approval odds and how to improve them.');
+            await typeMessage('Start by uploading your **medical bill** and **doctor\'s notes**.');
+
+            await typeMessage(null, false, (
+                <FileUpload
+                    placeholder="Load Documents for Simulation"
                     onFilesSelected={handleDocUpload}
                 />
             ));
@@ -421,6 +443,31 @@ function App() {
         if (currentWorkflow === 'appeal') {
             // Appeal usually implies detailed analysis first
             backendWorkflow = 'denial_explanation';
+        }
+
+        // Handle Simulation Workflow
+        if (currentWorkflow === 'simulator') {
+            await typeMessage('🔮 Running counterfactual simulation (this uses advanced reasoning)...');
+            setIsTyping(true);
+            try {
+                console.log('Calling runSimulation with:', { docIds, policyId });
+                const result = await runSimulation(docIds, policyId);
+                setIsTyping(false);
+
+                if (result.status === 'success' || result.data) {
+                    await typeMessage('Simulation Complete! Here are your scenarios:');
+                    await typeMessage(null, false, <SimulationResult result={result} />);
+                } else {
+                    await typeMessage('⚠️ Simulation returned no data. Please ensure documents have clinical info.');
+                }
+            } catch (e) {
+                setIsTyping(false);
+                console.error(e);
+                await typeMessage('❌ Error running simulation.');
+            } finally {
+                setTimeout(() => showMainOptions(), 3000);
+            }
+            return;
         }
 
         try {

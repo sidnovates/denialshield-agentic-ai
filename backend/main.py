@@ -54,7 +54,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 from database import init_db
-from routes import upload, analyze, appeal, insurance
+from routes import upload, analyze, appeal, insurance, simulation
 from config import settings
 
 # Configure logging
@@ -74,7 +74,7 @@ app = FastAPI(
 # Configure CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite default port
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -119,6 +119,8 @@ app.include_router(upload.router, prefix="/api", tags=["Upload"])
 app.include_router(analyze.router, prefix="/api", tags=["Analysis"])
 app.include_router(appeal.router, prefix="/api", tags=["Appeal"])
 app.include_router(insurance.router, prefix="/api", tags=["Insurance"])
+app.include_router(simulation.router, prefix="/api", tags=["Simulation"])
+
 from routes import session
 app.include_router(session.router, prefix="/api", tags=["Session"])
 

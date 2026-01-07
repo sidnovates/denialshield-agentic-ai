@@ -1,7 +1,6 @@
 """
 PaddleOCR integration for extracting text from PDFs and images.
 """
-from paddleocr import PaddleOCR
 from pathlib import Path
 from typing import List, Dict, Optional
 import logging
@@ -15,7 +14,16 @@ logger = logging.getLogger(__name__)
 # Initialize PaddleOCR
 # use_angle_cls=True enables angle classification for rotated text
 # lang='en' sets English as the language
-ocr_engine = PaddleOCR(use_angle_cls=True, lang='en')
+try:
+    from paddleocr import PaddleOCR
+    ocr_engine = PaddleOCR(use_angle_cls=True, lang='en')
+    logger.info("PaddleOCR initialized successfully.")
+except ImportError:
+    logger.warning("PaddleOCR not found. OCR functionality will be limited to MOCK data or basic text extraction.")
+    ocr_engine = None
+except Exception as e:
+    logger.warning(f"Failed to initialize PaddleOCR: {e}")
+    ocr_engine = None
 
 
 class OCRProcessor:
@@ -70,6 +78,10 @@ class OCRProcessor:
         Returns:
             Extracted text as a single string
         """
+        if self.ocr is None:
+            logger.error("OCR Engine is not initialized. Cannot process image.")
+            return "Error: OCR Engine not available."
+
         try:
             start_time = time.time()
             logger.info(f"Processing image: {image_path}")
