@@ -1,6 +1,27 @@
-# DenialShield - AI-Powered Medical Insurance Appeal Assistant
+<div align="center">
+  <img src="frontend/src/assets/logo.png" alt="DenialShield Logo" width="140" style="border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+  <h1>DenialShield</h1>
+  <p><strong>Autonomous Medical Appeal Agent</strong></p>
+  <p><i>"Healthcare is a right, not a privilege. Let AI fight the bureaucracy."</i></p>
 
-An intelligent multi-agent system that helps patients fight health insurance denials with AI-powered analysis, appeal letter generation, and predictive outcome simulation.
+  <p>
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/LangGraph-FF4B4B?style=for-the-badge&logo=langchain&logoColor=white" alt="LangGraph" />
+    <img src="https://img.shields.io/badge/PaddleOCR-007AFF?style=for-the-badge" alt="PaddleOCR" />
+    <img src="https://img.shields.io/badge/Groq-F55036?style=for-the-badge" alt="Groq" />
+  </p>
+</div>
+
+---
+
+## 🌟 Overview
+
+**DenialShield** is a cutting-edge Health Insurance Appeal Assistant powered by **Agentic AI**. It doesn't just generate text; it orchestrates a team of specialized AI agents to analyze, strategize, and fight incorrect claim denials.
+
+By combining **PaddleOCR** for document understanding and **LangGraph** for multi-agent collaboration, DenialShield turns a complex, stressful process into a single click.
+
+---
 
 ## 🌟 Features
 
