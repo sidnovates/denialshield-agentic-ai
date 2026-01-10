@@ -13,19 +13,19 @@ try:
 except ImportError:
     try:
         import langchain_core.documents
-        
+
         # Create mock modules
         docstore = types.ModuleType("langchain.docstore")
         document = types.ModuleType("langchain.docstore.document")
-        
+
         # Map the Document class
         document.Document = langchain_core.documents.Document
         docstore.document = document
-        
+
         # Register in sys.modules so imports work
         sys.modules["langchain.docstore"] = docstore
         sys.modules["langchain.docstore.document"] = document
-        
+
         print("✅ Applied patch for langchain.docstore compatibility")
     except ImportError:
         print("⚠️ Failed to apply langchain.docstore patch")
@@ -35,16 +35,16 @@ try:
 except ImportError:
     try:
         import langchain_text_splitters
-        
+
         # Create mock module
         text_splitter = types.ModuleType("langchain.text_splitter")
-        
+
         # Map the RecursiveCharacterTextSplitter class
         text_splitter.RecursiveCharacterTextSplitter = langchain_text_splitters.RecursiveCharacterTextSplitter
-        
+
         # Register in sys.modules
         sys.modules["langchain.text_splitter"] = text_splitter
-        
+
         print("✅ Applied patch for langchain.text_splitter compatibility")
     except ImportError:
         print("⚠️ Failed to apply langchain.text_splitter patch")
@@ -54,7 +54,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 from database import init_db
-from routes import upload, analyze, appeal, insurance
+from routes import upload, analyze, appeal, insurance, simulation
 from config import settings
 
 # Configure logging
@@ -74,7 +74,7 @@ app = FastAPI(
 # Configure CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite default port
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -119,10 +119,10 @@ app.include_router(upload.router, prefix="/api", tags=["Upload"])
 app.include_router(analyze.router, prefix="/api", tags=["Analysis"])
 app.include_router(appeal.router, prefix="/api", tags=["Appeal"])
 app.include_router(insurance.router, prefix="/api", tags=["Insurance"])
+app.include_router(simulation.router, prefix="/api", tags=["Simulation"])
+
 from routes import session
 app.include_router(session.router, prefix="/api", tags=["Session"])
-from routes import simulation
-app.include_router(simulation.router, prefix="/api", tags=["Simulation"])
 
 if __name__ == "__main__":
     import uvicorn

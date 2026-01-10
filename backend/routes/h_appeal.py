@@ -39,12 +39,12 @@ async def generate_appeal_letter(
     """
     try:
         session_id = str(uuid.uuid4())
-        
+
         # 1. Retrieve & Prepare Data
         documents = db.query(UploadedDocument).filter(
             UploadedDocument.id.in_(request.document_ids)
         ).all()
-        
+
         if not documents:
              raise HTTPException(status_code=400, detail="No documents found")
 
@@ -72,27 +72,23 @@ async def generate_appeal_letter(
 
         # 3. RUN MULTI-AGENT WORKFLOW
         # Running synchronously because LangGraph in this setup is sync, but wrapping in async handler.
-        
+
         logger.info(f"Starting Multi-Agent Appeal for Session {session_id}")
-        
-        # Orchestrator now returns full state dict (not just appeal_draft string)
+
         final_state = await asyncio.to_thread(
             run_appeal_workflow, 
             combined_ocr_data, 
-            insurance_rules,
-            db  # Pass database session for knowledge graph features
+            insurance_rules
         )
-        
-        # Extract appeal draft from state
-        appeal_text = final_state.get("appeal_draft", "")
-        simulation_result = final_state.get("simulation_result", {})
+
+        appeal_text = final_state.get("appeal_draft", "Error: No draft generated.")
         
         # 4. Generate PDF (Formal Formatting)
         pdf_filename = f"appeal_letter_{session_id}.pdf"
         pdf_path = settings.UPLOAD_FOLDER / "Appeal"
         pdf_path.mkdir(parents=True, exist_ok=True)
         final_pdf_path = pdf_path / pdf_filename
-        
+
         # Map input for pdf_generator
         # It expects {'body': text, 'subject': ...} or structured paragraphs.
         # Since agents return full text, we pass it as body.
@@ -100,16 +96,16 @@ async def generate_appeal_letter(
             "subject": f"Appeal for Claim - {combined_ocr_data.get('denial', {}).get('structured', {}).get('patient_name', 'Patient')}",
             "body": appeal_text
         }
-        
+
         # Use user details from request, or empty dict if None
         user_info = request.user_details or {}
-        
+
         # Generate using the advanced formatter
         success, error = create_appeal_pdf(llm_content, user_info, str(final_pdf_path))
-        
+
         if not success:
             raise Exception(f"PDF Generation Failed: {error}")
-        
+
         # 5. Store & Return
         generated_appeal = GeneratedAppeal(
             session_id=session_id,
@@ -119,13 +115,13 @@ async def generate_appeal_letter(
         )
         db.add(generated_appeal)
         db.commit()
-        
+
         return FileResponse(
             path=str(final_pdf_path),
             filename=f"Appeal_Letter_{session_id[:8]}.pdf",
             media_type="application/pdf"
         )
-            
+
     except Exception as e:
         logger.error(f"Error generating appeal: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

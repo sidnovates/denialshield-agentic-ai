@@ -106,19 +106,30 @@ Return ONLY valid JSON.
                 "explanation": str(e)
             }
     
-    def explain_denial(self, denial_data: Dict[str, Any], supporting_docs: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def explain_denial(self, denial_data: Dict[str, Any], supporting_docs: List[Dict[str, Any]] = None, historical_context: Optional[dict] = None) -> Dict[str, Any]:
         """
         Explain a denial letter in simple English.
         
         Args:
             denial_data: Extracted denial letter fields
             supporting_docs: Other documents (doctor notes, bills) if available
+            historical_context: Information on similar past denials (Memory)
             
         Returns:
             Explanation with patient-friendly language
         """
         denial_str = json.dumps(denial_data, indent=2)
         supporting_str = json.dumps(supporting_docs, indent=2) if supporting_docs else "No supporting documents"
+        
+        # Format Memory Context
+        memory_str = ""
+        if historical_context and historical_context.get("found"):
+            memory_str = f"""
+            PAST AI MEMORY (For Context Only - Use to improve 'next_steps'):
+            - This denial pattern has happened {historical_context.get('occurrence_count')} times before.
+            - Successful resolution strategy from past: {historical_context.get('suggested_solution')}
+            - Commonly missing docs: {historical_context.get('common_missing_docs')}
+            """
         
         prompt = f"""You are a patient advocate explaining insurance denials in simple English.
 
@@ -128,6 +139,8 @@ Denial Letter Information:
 Supporting Documents:
 {supporting_str}
 
+{memory_str}
+
 Provide a clear explanation in JSON format:
 {{
   "simple_explanation": "<easy-to-understand explanation>",
@@ -136,6 +149,8 @@ Provide a clear explanation in JSON format:
   "missing_documentation_identified": [<list>],
   "next_steps": "<what the patient should do>"
 }}
+
+If PAST AI MEMORY is provided, specifically mention "We have seen similar denials X times" in the 'simple_explanation' or 'next_steps' to reassure the user.
 
 Return ONLY valid JSON.
 """
