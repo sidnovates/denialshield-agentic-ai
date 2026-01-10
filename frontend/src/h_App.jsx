@@ -121,7 +121,7 @@ function App() {
             ));
         }
 
-        // CASE 3: Denial Explanation or Appeal -> INTELLIGENT CONTEXT
+        // CASE 2: Denial Explanation or Appeal -> INTELLIGENT CONTEXT
         else {
             let hasPreClaim = false;
             let hasPolicy = false;
@@ -447,7 +447,7 @@ function App() {
 
         // Handle Simulation Workflow
         if (currentWorkflow === 'simulator') {
-            await typeMessage('\ud83d\udd2e Running counterfactual simulation (this uses advanced reasoning)...');
+            await typeMessage('🔮 Running counterfactual simulation (this uses advanced reasoning)...');
             setIsTyping(true);
             try {
                 console.log('Calling runSimulation with:', { docIds, policyId });
@@ -458,12 +458,12 @@ function App() {
                     await typeMessage('Simulation Complete! Here are your scenarios:');
                     await typeMessage(null, false, <SimulationResult result={result} />);
                 } else {
-                    await typeMessage('\u26a0\ufe0f Simulation returned no data. Please ensure documents have clinical info.');
+                    await typeMessage('⚠️ Simulation returned no data. Please ensure documents have clinical info.');
                 }
             } catch (e) {
                 setIsTyping(false);
                 console.error(e);
-                await typeMessage('\u274c Error running simulation.');
+                await typeMessage('❌ Error running simulation.');
             } finally {
                 setTimeout(() => showMainOptions(), 3000);
             }

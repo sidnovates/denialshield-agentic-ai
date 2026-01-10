@@ -11,6 +11,7 @@ from agents.medical_agent import run_medical_agent
 from agents.legal_agent import run_legal_agent
 from agents.negotiator_agent import run_negotiator_agent
 from agents.auditor_agent import run_auditor_agent
+from agents.simulator_agent import run_simulator_agent
 from database import SessionLocal
 from utils.memory_graph import record_denial_pattern, get_pattern_suggestions
 
@@ -45,15 +46,18 @@ def create_appeal_graph():
     workflow.add_node("policy_agent", run_policy_agent)
     workflow.add_node("medical_agent", run_medical_agent)
     workflow.add_node("legal_agent", run_legal_agent)
+    workflow.add_node("simulator_agent", run_simulator_agent)
     workflow.add_node("negotiator_agent", run_negotiator_agent)
     workflow.add_node("auditor_agent", run_auditor_agent)
     
-    # Define Edges (Linear Flow)
+    # Define Edges (Flow with parallel paths after medical agent)
     workflow.set_entry_point("policy_agent")
     
     workflow.add_edge("policy_agent", "medical_agent")
     workflow.add_edge("medical_agent", "legal_agent")
+    workflow.add_edge("medical_agent", "simulator_agent")  # Simulator runs after medical data is available
     workflow.add_edge("legal_agent", "negotiator_agent")
+    workflow.add_edge("simulator_agent", "negotiator_agent")  # Simulator feeds into negotiator
     workflow.add_edge("negotiator_agent", "auditor_agent")
     
     # Conditional Edge from Auditor
@@ -68,9 +72,10 @@ def create_appeal_graph():
     
     return workflow.compile()
 
-def run_appeal_workflow(ocr_data: dict, insurance_rules: dict, db_session: SessionLocal = None) -> str:
+def run_appeal_workflow(ocr_data: dict, insurance_rules: dict, db_session: SessionLocal = None) -> dict:
     """
     Entry point to run the entire graph.
+    Returns the full final state including simulation results and appeal draft.
     """
     print("\n🔗 STARTING MULTI-AGENT APPEAL WORKFLOW 🔗")
     print("---------------------------------------------")
@@ -161,4 +166,5 @@ def run_appeal_workflow(ocr_data: dict, insurance_rules: dict, db_session: Sessi
     if local_session:
         db_session.close()
 
-    return final_state.get("appeal_draft", "Error: No draft generated.")
+    # Return full state (includes appeal_draft, simulation_result, and all agent outputs)
+    return final_state
